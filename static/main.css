@@ -6,3 +6,12 @@ body {
     color:black !important;
     text-decoration: none;
 }
+
+#auth-jumbotron {
+    width: 500px !important;
+}
+
+#navbar {
+    background-color: #eee !important;
+    border-radius: 5px !important;
+}

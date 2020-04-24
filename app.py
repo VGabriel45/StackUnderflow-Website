@@ -9,6 +9,14 @@ response_like = 0
 question_like = 0
 
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    username = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    question = db.relationship('Question', backref='user')
+
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String(100), nullable=False)
@@ -16,6 +24,7 @@ class Question(db.Model):
     author = db.Column(db.String(100), nullable=False)
     likes = db.relationship('Likes', backref='question')
     responses = db.relationship('Response', backref='question')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 class Response(db.Model):
@@ -105,6 +114,16 @@ def delete_question(id):
     db.session.delete(question)
     db.session.commit()
     return redirect(request.referrer)
+
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    return render_template('login.html')
 
 
 if __name__ == "__main__":
