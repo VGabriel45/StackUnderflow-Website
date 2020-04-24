@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<title>Form Page</title>
+{% endblock %}
+
+{% block body %}
+<div class="mt-5 container jumbotron">
+    <a href="/">
+        <i class="fa fa-arrow-left"> Go back</i>
+    </a> <br> <br>
+    <h2>Ask a public question</h2> <br>
+    <hr>
+    <form action="/" method="POST">
+        <div class="form-group">
+            <label for="title">Title</label> <br>
+            <small>Be specific and imagine you’re asking a question to another person</small>
+            <input class="form-control" id="title" name="title">
+        </div>
+        <div class="form-group">
+            <label for="description">Body</label> <br>
+            <small>Include all the information someone would need to answer your question</small>
+            <textarea class="form-control" id="description" rows="5" name="description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="author">Enter your name</label>
+            <input style="width: 200px;" class="form-control" id="author" name="author">
+        </div>
+        <button type="submit" class="mt-2 btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

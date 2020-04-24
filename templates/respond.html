@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<title>Response Page</title>
+{% endblock %}
+
+{% block body %}
+<div class="mt-5 container jumbotron">
+    <div class="container">
+        <a href="/" class="btnbtn-sm">Back to home page</a>
+        <br>
+        <br>
+        <h2>Question: </h2>
+        <div class="card" style="width:100%">
+            <div class="card-body">
+                <div id="title" class="float-left">
+                    <h5 class="card-title">{{question.title}}</h5>
+                </div>
+                <div id="like" class="float-right">
+                    <a href="/like-question/{{ question.id }}" id="like"><i class="fa fa-heart"></i>
+                        {{  question.likes|length }}</a>
+                </div>
+                <br>
+                <hr>
+                <p class="card-text">{{question.description}}</p>
+                <small>By <strong>{{ question.author }}</strong></small> <br>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="container">
+        {% for response in question.responses %}
+        <hr>
+        <p>Answer {{response.id}}</p>
+        <p class="card-text">{{ response.response }}</p>
+        <small>By {{ response.author }}</small> <br>
+        <div class="mt-2">
+            <a href="/delete-response/{{ response.id }}" class="btn btn-danger btn-sm float-right">Delete</a>
+            <div>
+                <a href="/like-response/{{ response.id }}" id="like"> <i class="fa fa-heart"></i>
+                    {{  response.likes|length }}</a>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+    <div class="container">
+        <form action="/respond-question/{{ question.id }}" method="POST">
+            <div class="form-group">
+                <label for="response">Your answer</label>
+                <textarea class="form-control" id="response" rows="6" name="response"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="response">Your name</label>
+                <input style="width: 200px;" class="form-control" id="author" name="author">
+            </div>
+            <br>
+            <button class="btn btn-primary btn-sm" type="submit">Submit your answer</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

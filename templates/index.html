@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<title>Home Page</title>
+{% endblock %}
+
+{% block body %}
+<div class="mt-5 container jumbotron">
+    <h1>StackUnderflow</h1>
+    <br>
+    <h4>All questions</h4>
+    <hr>
+    {% for question in all_questions %}
+    <br>
+    <div class="card" style="width: 40rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{question.title}}</h5>
+            <p class="card-text">{{question.description}}</p>
+            <small>By <strong>{{ question.author }}</strong></small> <br>
+            <hr>
+            <a href="/respond-question/{{ question.id }}" type="button"
+                class="btn btn-primary btn-sm card-link">Respond</a>
+            <a href="/delete-question/{{ question.id }}" type="button"
+                class="btn btn-danger btn-sm card-link">Delete</a> <br> <br>
+            <small>{{ question.responses | length}} Answers</small>
+            <i class="fa fa-heart float-right"> {{   question.likes|length }}</i>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+    <a href="/ask-question">Ask a question</a>
+</div>
+{% endblock %}
