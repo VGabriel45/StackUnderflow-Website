@@ -6,27 +6,35 @@
 
 {% block body %}
 <div class="container jumbotron mt-5" id="auth-jumbotron">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="btn btn-danger mb-3">
+        {{ messages[0] }}. Go to <a style="color: antiquewhite;" href="/login">Login page</a>.
+    </div>
+    {% endif %}
+    {% endwith %}
     <h1>Register</h1>
     <hr>
-    <form>
+    <form action="/register" method="POST">
         <div class="form-group">
             <label for="exampleInputEmail1">Username</label>
-            <input type="username" class="form-control" id="username" placeholder="Enter username" name="username">
+            <input type="username" class="form-control" id="username" placeholder="Enter username" name="username"
+                required>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"
-                name="email">
+                name="email" required>
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+            <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Confirm password</label>
             <input type="password" class="form-control" id="password" placeholder="Confirm password"
-                name="confirm-password">
+                name="confirm-password" required>
         </div>
         <button type="submit" class="btn btn-primary">Create account</button>
     </form>

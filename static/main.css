@@ -1,5 +1,5 @@
 body {
-    background-color: #5e8ea5 !important;
+    background-color: #aec3ee !important;
 }
 
 #like {
@@ -8,6 +8,7 @@ body {
 }
 
 #auth-jumbotron {
+    box-shadow: 3px 3px 3px 2px rgba(36, 36, 36, 0.2);
     width: 500px !important;
 }
 

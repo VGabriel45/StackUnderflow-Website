@@ -29,6 +29,7 @@
         <br>
     </div>
     <div class="container">
+        <h4>Answers: </h4>
         {% for response in question.responses %}
         <hr>
         <p>Answer {{response.id}}</p>
@@ -48,11 +49,11 @@
         <form action="/respond-question/{{ question.id }}" method="POST">
             <div class="form-group">
                 <label for="response">Your answer</label>
-                <textarea class="form-control" id="response" rows="6" name="response"></textarea>
+                <textarea class="form-control" id="response" rows="6" name="response" required></textarea>
             </div>
             <div class="form-group">
                 <label for="response">Your name</label>
-                <input style="width: 200px;" class="form-control" id="author" name="author">
+                <input style="width: 200px;" class="form-control" id="author" name="author" required>
             </div>
             <br>
             <button class="btn btn-primary btn-sm" type="submit">Submit your answer</button>

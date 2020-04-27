@@ -1,5 +1,7 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, login_user, logout_user, login_required
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -9,7 +11,7 @@ response_like = 0
 question_like = 0
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     username = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
@@ -57,7 +59,8 @@ def home_page():
     else:
         all_questions = Question.query.all()
         all_responses = Response.query.all()
-        return render_template('index.html', all_questions=all_questions, all_responses=all_responses)
+        all_users = User.query.all()
+        return render_template('index.html', all_questions=all_questions, all_responses=all_responses, all_users=all_users)
 
 
 @app.route('/ask-question', methods=['GET', 'POST'])
@@ -118,14 +121,48 @@ def delete_question(id):
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    return render_template('register.html')
+    if request.method == "POST":
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            flash('Email address already exists')
+            return redirect('/register')
+        new_user = User(username=username, email=email,
+                        password=generate_password_hash(password, method='sha256'))
+
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect('/login')
+    else:
+        return render_template('register.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    return render_template('login.html')
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+
+        remember = True if request.form.get('remember') else False
+        user = User.query.filter_by(email=email).first()
+        if not user or not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.')
+            return redirect('/login')
+        return redirect('/')
+    else:
+        all_users = User.query.all()
+        return render_template('login.html', all_users=all_users)
+
+
+@app.route('/logout', methods=["GET"])
+def logout():
+    return 'You have been logged out!'
 
 
 if __name__ == "__main__":
+    app.secret_key = 'super secret key'
     debug = True
     app.run()
